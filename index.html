@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedição - Romaneio Profissional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="no-print">
+        <h1>Sistema de Expedição</h1>
+        <p>Carregue um ou vários XMLs. Cada XML vira uma capa independente, que pode ser revisada, editada e impressa individualmente.</p>
+    </header>
+
+    <main class="no-print">
+        <div class="upload-container">
+            <input type="file" id="xmlInput" accept=".xml,text/xml" multiple>
+            <label for="xmlInput" class="upload-label">[ Escolher um ou mais XMLs ]</label>
+            <span id="fileSummary" class="file-summary">Nenhum XML carregado</span>
+        </div>
+
+        <div id="documentNav" class="document-nav" hidden>
+            <div class="nav-heading">
+                <strong>Capas carregadas</strong>
+                <span id="documentCount">0 capas</span>
+            </div>
+            <div id="documentTabs" class="document-tabs"></div>
+        </div>
+
+        <div id="alertaVolume" class="alerta-volume no-print" style="display: none;">
+            ⚠️ <strong>Possível divergência no volume!</strong> O XML informa <span id="volOriginalXml">0</span> volume(s), mas a calculadora indica <span id="volCalculadoSugerido">0</span> volume(s). O valor da capa foi ajustado.
+        </div>
+
+        <div class="config-container">
+            <label for="responsavelSelect"><strong>Selecionar Responsável:</strong></label>
+            <select id="responsavelSelect">
+                <option value="">-- Selecione o Responsável --</option>
+                <option value=" / PF-CAROLINE">1: / PF-CAROLINE</option>
+                <option value=" / PF-SARA">2: / PF-SARA</option>
+                <option value=" / PF-NICOLY">3: / PF-NICOLY</option>
+                <option value=" / MERCADO LIVRE">4: / MERCADO LIVRE</option>
+            </select>
+        </div>
+        <button id="addItemBtn" class="btn-secundario no-print">+ Adicionar Novo Item</button>
+        <p id="emptyState" class="empty-state">Escolha um ou mais arquivos XML para começar.</p>
+    </main>
+
+    <div id="printArea" hidden>
+        <div class="conteudo-flexivel">
+            <div class="header-nota">
+                <div class="titulo-container">
+                    <span class="tag-topo">NOTA FISCAL</span>
+                    <div id="outNF" class="nf-gigante">---</div>
+                </div>
+                <div class="dados-data"><strong>DATA:</strong> <span id="outData">---</span></div>
+            </div>
+
+            <section class="dados-secao">
+                <div class="tag-secao">DESTINATÁRIO</div>
+                <p class="texto-destaque"><span id="outDestinatario">---</span><span id="outResponsavel" style="color: #d32f2f;"></span></p>
+            </section>
+
+            <section class="dados-secao">
+                <div class="tag-secao">LOGÍSTICA</div>
+                <div class="grid-logistica">
+                    <div class="transp-info"><strong>TRANSP:</strong><span id="outTransportadora" class="transp-destaque" contenteditable="true">---</span></div>
+                    <div class="vol-container"><strong>VOLUMES:</strong><input type="text" id="outVolumes" class="vol-gigante" value="1"></div>
+                </div>
+            </section>
+
+            <section class="dados-secao tabela-container">
+                <div class="tag-secao">ITENS PARA CONFERÊNCIA</div>
+                <table id="tabelaItens">
+                    <thead><tr><th style="width: 10%;">QTD</th><th style="width: 75%;">DESCRIÇÃO DO PRODUTO</th><th style="width: 10%;">CONF.</th><th class="no-print" style="width: 5%;"></th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+    <button id="btnAbrirChecklist" class="btn-print no-print" disabled>Imprimir Capa Atual</button>
+
+    <div id="modalChecklist" class="modal-overlay no-print">
+        <div class="modal-content">
+            <h2>⚠️ Conferência de Embarque</h2>
+            <p>Confirme a conferência física da capa atual antes de enviar para a impressora:</p>
+            <div class="checklist-container">
+                <label class="check-item"><input type="checkbox" class="chk-conferencia"><span>Confiri a quantidade total de <strong>VOLUMES</strong> da carga.</span></label>
+                <label class="check-item"><input type="checkbox" class="chk-conferencia"><span>Confiri a <strong>QUANTIDADE DE ETIQUETAS</strong> coladas nos volumes.</span></label>
+            </div>
+            <div class="modal-acoes"><button id="btnCancelarModal" class="btn-modal-cancelar">Voltar</button><button id="btnConfirmarImpressao" class="btn-modal-confirmar" disabled>Confirmar e Imprimir 🖨️</button></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
