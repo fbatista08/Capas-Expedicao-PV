@@ -26,7 +26,17 @@ const transpMap = {
     "TRANSPORTADORA M.M.A LTDA": "MMA",
     "TRANSNORTEX CARGAS EIRELI": "NORTEX",
     "FORMATO TRANSPORTES LTDA": "FORMATO",
-    "SILVANIO SILVA DE CAMPOS TRANSPORTES": "TRANSVANIO"
+    "SILVANIO SILVA DE CAMPOS TRANSPORTES": "TRANSVANIO",
+    "RAPIDO PANAMERICANO EIRELI": "PANAMERICANO",
+    "TRANSPORTADORA M.M.A. LTDA": "FIGUEIREDO",
+    "TRANSVANIO TRANSPORTADORA LTDA": "TRANSVANIO",
+    "VOO TRANSPORTES LOGISTICA LTDA": "VOO",
+    "HENCA TRANSPORTES LTDA": "HENCA",
+    "CPP LOG LOGISTICA E TRANSPORTES LTDA": "CPP LOG",
+    "AMAZON TRANSPORTES LT": "AMAZON",
+    "ABT-LOG TRANSPORTES LTDA": "ABT-LOG",
+    "RAPIDO FIGUEIREDO LOGISTICA E TRANSPORTES EIRELI": "FIGUEIREDO",
+    "TJ4 TRANSPORTES LTDA": "FRILOG"
 };
 
 const coresMap = { 
@@ -117,6 +127,14 @@ function calcularVolumeSugerido() {
             let volsCol = Math.ceil((qtd * 4) / 10);
             totalVols += (volsCol + qtd);
         } 
+        // Montante de expedição: 2 montantes equivalem a 5 volumes
+        else if (descricao.includes("MONTANTE") && (descricao.includes("EXPEDIÇÃO") || descricao.includes("EXPEDICAO"))) {
+            totalVols += Math.ceil(qtd / 2) * 5;
+        }
+        // Transversina: 1 volume a cada 10 unidades
+        else if (descricao.includes("TRANSVERSINA")) {
+            totalVols += Math.ceil(qtd / 10);
+        }
         // Coluna Avulsa (Montante) = 2 volumes por qtd (1 montante + 1 travessa)
         else if (descricao.includes("MONTANTE") || (descricao.includes("COLUNA") && !descricao.includes("ESTANTE"))) {
             totalVols += (qtd * 2);
@@ -150,6 +168,8 @@ function calcularVolumeDaCapa(capa) {
         if (qtd <= 0) return;
         if (descricao.includes("ESTANTE") && descricao.includes("LEVE")) totalVols += Math.ceil((qtd * 4) / 20) + qtd;
         else if (descricao.includes("ESTANTE") && (descricao.includes("INDUSTRIAL") || descricao.includes("PESADA"))) totalVols += Math.ceil((qtd * 4) / 10) + qtd;
+        else if (descricao.includes("MONTANTE") && (descricao.includes("EXPEDIÇÃO") || descricao.includes("EXPEDICAO"))) totalVols += Math.ceil(qtd / 2) * 5;
+        else if (descricao.includes("TRANSVERSINA")) totalVols += Math.ceil(qtd / 10);
         else if (descricao.includes("MONTANTE") || (descricao.includes("COLUNA") && !descricao.includes("ESTANTE"))) totalVols += qtd * 2;
         else if (descricao.includes("LONGARINA") || descricao.includes("PRATELEIRA")) totalVols += qtd;
         else if (descricao.includes("BANDEJA")) totalVols += Math.ceil(qtd / 6);
