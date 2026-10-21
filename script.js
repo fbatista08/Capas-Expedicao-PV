@@ -75,6 +75,12 @@ function aplicarDestaques(texto, forcarInsercaoInicial = false) {
     }
     nome = nome.replace(/\bPRATELEIRAS?\b/g, "PAR DE LONGARINA");
 
+    // Montante de expedição é sempre SLIM, nunca MINI
+    if (nome.includes("MONTANTE") && (nome.includes("EXPEDIÇÃO") || nome.includes("EXPEDICAO"))) {
+        nome = nome.replace(/\bMINI\b/g, "").replace(/\bSLIM\b/g, "");
+        nome += " SLIM";
+    }
+
     // 4. Lógica de Modelo (SLIM / MINI)
     if (nome.includes("MONTANTE") || nome.includes("LONGARINA")) {
         if (/\bSL\b/.test(nome)) {
